@@ -1,6 +1,12 @@
+option(multi_threaded_server "Control if the server example use multi-threaded accept." 0)
+
 add_executable(server
    server.cpp
 )
+
+if(${multi_threaded_server})
+   add_definitions(-DMULTI_THREADED_SERVER)
+endif()
 
 if(WIN32)
    # Target Windows XP.

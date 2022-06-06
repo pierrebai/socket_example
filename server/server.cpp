@@ -41,7 +41,11 @@ int main(int argc, char* argv[])
       asio::ip::tcp::acceptor acceptor(io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), server_context.port_number));
       while (true)
       {
-         std::thread(server::serve_client, acceptor.accept()).detach();
+         #ifdef MULTI_THREADED_SERVER
+            std::thread(server::serve_client, acceptor.accept()).detach();
+         #else
+            server::serve_client(acceptor.accept());
+         #endif
       }
    }
    catch (std::exception& e)
